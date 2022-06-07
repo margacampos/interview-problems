@@ -1,8 +1,9 @@
 const arr = [ 1, 2, 2, 2, 4, 7, 7, 9, 10, 10, 10, 11 ];
-const target = 7;
+const target = 5;
 
 const firstLastPosition = ( arr, target ) => {
     let start = arr.indexOf(target);
+    if(start === -1)return [-1, -1];
     let end = start;
 
     // O(n)
