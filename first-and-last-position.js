@@ -1,8 +1,24 @@
 const arr = [ 1, 2, 2, 2, 4, 7, 7, 9, 10, 10, 10, 11 ];
-const target = 5;
+const target = 10;
+
+const findFirstTarget = ( arr, start, end, target ) => {
+    const mid = Math.floor( ( start + end ) / 2 );
+    
+    if( arr[mid] === target ) {
+        if (!arr[mid-1] || arr[mid-1] < arr[mid])return mid;
+    };
+
+    if( end - start === 0 ) return -1;
+
+    if( arr[mid] >= target ) return findFirstTarget( arr, start, mid - 1, target );
+    else return findFirstTarget( arr, mid + 1, end, target );
+    
+};
 
 const firstLastPosition = ( arr, target ) => {
-    let start = arr.indexOf(target);
+    // let start = arr.indexOf(target);
+    let start = findFirstTarget( arr, 0, arr.length - 1, target );
+
     if(start === -1)return [-1, -1];
     let end = start;
 
@@ -16,3 +32,7 @@ const firstLastPosition = ( arr, target ) => {
 };
 
 console.log(firstLastPosition(arr, target));
+
+
+
+// console.log(findFirstTarget( arr, 0, arr.length - 1, target ));
