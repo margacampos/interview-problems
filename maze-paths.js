@@ -13,8 +13,39 @@ const countPaths = ( map, start ) => {
     const visited = new Set();
     const memo = {};
     let [r, c] = start;
-    let paths = {};
-    return explore( map, r, c, visited, paths );
+    let paths = [];
+    comb = [];
+    gen( map, r, c, visited, comb, paths );
+    return paths;
+};
+const gen = ( map, r, c, visited, comb, combs ) => {
+    const rowInBounds = ( 0 <= r && r < map.length );
+    const colInBounds = ( 0 <= c && c < map[0].length );
+    if( !rowInBounds || !colInBounds ) return;
+    if( map[r][c] === 'E')return combs.push(comb); 
+    const pos = `${r},${c}`;
+    if( visited.has(pos) )return;
+    visited.add(pos);
+    if( map[r][c] === 'L')return;
+    // if ( n === 0 && diff === 0)combs.push(comb.join(''));
+    
+    comb.push(`${r + 1},${c}`);
+    gen( map, r + 1, c, comb, combs );
+    comb.pop(`${r + 1},${c}`);
+    comb.push(`${r},${c + 1}`);
+    gen( map, r , c + 1, comb, combs );
+    comb.pop(`${r},${c + 1}`);
+    comb.push(`${r - 1},${c}`);
+    gen( map, r - 1, c, comb, combs );
+    comb.pop(`${r - 1},${c}`);
+    comb.push(`${r},${c - 1}`);
+    gen( map, r, c - 1, comb, combs );
+    comb.pop(`${r},${c - 1}`);
+    // gen(n-1, diff+1, comb, combs);
+    // comb.pop();
+    // comb.push(')');
+    // gen(n-1, diff-1, comb, combs);
+    // comb.pop();
 };
 
 const explore = ( map, r, c, visited, paths ) => {
@@ -28,6 +59,7 @@ const explore = ( map, r, c, visited, paths ) => {
     if( visited.has(pos) )return 0;
     visited.add(pos);
     if( map[r][c] === 'L')return 0;
+    
     
     const up = explore( map, r - 1, c, visited, paths );
     const down = explore( map, r + 1, c, visited, paths );
